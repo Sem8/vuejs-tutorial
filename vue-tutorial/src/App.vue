@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <!-- displaying something from data -->
@@ -39,46 +40,94 @@
     <button onclick="alert('signed up')" v-bind:disabled="email.length < 2">Submit</button>-->
 
     <!-- v-on add a function to an html element -->
-    <input v-model="newCat" v-on:keyup.enter="addKitty">
-    <button v-on:click="addKitty"> + ADD </button>
+    <!-- <input v-model="newCat" v-on:keyup.enter="addKitty" />
+    <button v-on:click="addKitty">+ ADD</button>-->
+
+    <!-- chaining methods to click events like preventDefault() and stop propagation -->
+    <!-- <button v-on:click.prevent.stop="addKitty"> + ADD </button> -->
+
+    <!-- Short for v-on:click is @click='addKitty'  -->
+    <!-- <button @click="addKitty"> + ADD </button>
+    <input v-model="newCat" @:keyup.enter="addKitty">-->
 
     <!-- v-for - Loops through an array with for in loop -->
+    <!-- <ul>       -->
+    <!-- <li v-for="cat in catsII" v-bind:key='catsII.indexOf(cat)'>{{ cat.name }}</li> -->
+    <!-- <li v-for="cat in cats" v-bind:key='cats.indexOf(cat)'>{{ cat }}</li> -->
+    <!-- </ul> -->
+
+    <!-- Vue filters - pipes capitalize function to the cat.name data -->
+    <!-- <ul>
+      <li v-for="cat in catsII" v-bind:key="catsII.indexOf(cat)">{{ cat.name | capitalize | kittify }}</li>
+    </ul>-->
+
+    <p v-on:click="testing">{{ count }} testing</p>
+
+    <!-- Computed methods -->
+    <br />
+    <!-- {{ kittifyName }} computed keeps giving error, doesn't work -->
+    <input v-model="newCat" v-on:keyup.enter="addKitty" />
+    <button v-on:click="addKitty">+ ADD</button>
     <ul>
-      <!-- <li v-for="cat in cats" v-bind:key='cats.indexOf(cat)'>{{ cat }}</li> -->
-      <li v-for="cat in catsII" v-bind:key='catsII.indexOf(cat)'>{{ cat.name }}</li>
+      <li v-for="cat in catsII" v-bind:key="catsII.indexOf(cat)">{{ cat.name }}</li>
     </ul>
 
-    <p v-on:click="testing"> {{ count }} testing </p>
+    <!-- Doesn't work -->
+    <!-- <cat-list :cats='cats' />   -->
   </div>
 </template>
 
 <script>
+// import Vue from "vue";
+
+/* Doesn't work
+Vue.component("cat-list", {
+  props: ['catsII'],
+  template: `<ul><li v-for="cat in catsII">{{cat.name}}</li></ul>`
+});
+});
+*/
+
+
+
 export default {
   name: "App",
-  components: {},
+  // component: ["cat-list"], // doesn't work
+  
   data() {
     return {
       greeting: "Hello Vue",
       count: 2,
       email: "cats@gmail.com",
       cats: ["kitkat", "fish", "henry", "bosco", "melanthios"],
-      catsII: [
-        {name: "kitkat"},
-        {name: "fish"},
-        {name: "henry"}
-      ],
-      newCat: '',
+      catsII: [{ name: "kitkat" }, { name: "fish" }, { name: "henry" }],
+      newCat: ""
     };
   },
   methods: {
     addKitty: function() {
       this.catsII.push({ name: this.newCat });
-      this.newCat = '';
+      this.newCat = "";
     },
     testing: function() {
       return this.count++;
     }
+  },
+  filters: {
+    capitalize: function(value) {
+      return value.toUpperCase();
+    },
+    kittify: function(value) {
+      return value + "y";
+    }
   }
+  // computed: {
+  //   kittifyName: function() {
+  //     if (this.newCat.length > 1) {
+  //       return this.newCat + "y";
+  //     }
+  //   }
+  // }   // computed doesn't work keeps giving error
 };
 </script>
 
